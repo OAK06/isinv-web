@@ -32,9 +32,6 @@ spec:
           ports:
             - containerPort: 3000
               protocol: TCP
-          envFrom:
-            - secretRef:
-                name: isinv-env
           # No resource requests or limits on purpose: the NODE is the budget.
           # Every pod grabs what it actually uses and shares the node freely; capacity
           # is managed by watching the node (kubectl top nodes) and upgrading the
