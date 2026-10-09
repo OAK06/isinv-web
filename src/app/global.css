@@ -1,0 +1,164 @@
+/* Inter = clean, trustworthy body (B2B SaaS). Barlow Condensed = athletic display
+   headings for the marketing pages. Replaces the old "Muli" import, which no longer
+   resolves on Google Fonts (renamed to "Mulish" in 2020) and was silently falling back. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*::-moz-selection {
+    background: hsl(var(--a) / var(--tw-text-opacity, 1));
+    color: hsl(var(--b1) / var(--tw-bg-opacity, 1));
+    text-shadow: none;
+}
+
+::-moz-selection {
+    background: hsl(var(--a) / var(--tw-text-opacity, 1));
+    color: hsl(var(--b1) / var(--tw-bg-opacity, 1));
+    text-shadow: none;
+}
+
+::selection {
+    background: hsl(var(--a) / var(--tw-text-opacity, 1));
+    color: hsl(var(--b1) / var(--tw-bg-opacity, 1));
+    text-shadow: none;
+}
+
+@keyframes fade-in {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.scroll-fade-in {
+    opacity: 0;
+    transition: all 0.8s ease-out;
+}
+.scroll-fade-in-bottom {
+    transform: translateY(20px);
+}
+.scroll-fade-in-right {
+    transform: translateX(20px);
+}
+.scroll-fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Marketing pages get the athletic display headings; the dense app UI keeps the
+   clean body font so small headers stay readable. */
+.marketing h1, .marketing h2, .marketing h3, .marketing h4 {
+    font-family: "Barlow Condensed", "Inter", ui-sans-serif, sans-serif;
+    letter-spacing: 0.01em;
+}
+
+/* Small pill label above marketing section titles. Colors come from the active
+   daisyUI theme vars only (hard rule #1). */
+.marketing .section-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid hsl(var(--p) / 0.2);
+    background-color: hsl(var(--p) / 0.05);
+    border-radius: 9999px;
+    padding: 0.375rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: hsl(var(--p));
+}
+.marketing .section-eyebrow::before {
+    content: "";
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: 9999px;
+    background-color: hsl(var(--p));
+}
+
+/* Accessibility: users who ask for less motion shouldn't get the scroll reveals. */
+@media (prefers-reduced-motion: reduce) {
+    .scroll-fade-in {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+}
+
+.input-sm {
+    line-height: 2;
+}
+
+.select-sm {
+    line-height: 1;
+}
+
+.menu li > *:not(ul):not(.menu-title):not(details):active, 
+.menu li > *:not(ul):not(.menu-title):not(details).active, 
+.menu li > details > summary:active {
+    background-color: rgb(75 85 99 / var(--tw-bg-opacity));
+    color: #ffffff
+}
+
+:where(.menu li:not(.menu-title):not(.disabled) > *:not(ul):not(details):not(.menu-title)):not(summary):not(.active).focus, 
+:where(.menu li:not(.menu-title):not(.disabled) > *:not(ul):not(details):not(.menu-title)):not(summary):not(.active):focus, 
+:where(.menu li:not(.menu-title):not(.disabled) > *:not(ul):not(details):not(.menu-title)):is(summary):not(.active):focus-visible, 
+:where(.menu li:not(.menu-title):not(.disabled) > details > summary:not(.menu-title)):not(summary):not(.active).focus, 
+:where(.menu li:not(.menu-title):not(.disabled) > details > summary:not(.menu-title)):not(summary):not(.active):focus, 
+:where(.menu li:not(.menu-title):not(.disabled) > details > summary:not(.menu-title)):is(summary):not(.active):focus-visible {
+    color: rgb(209 213 219 / var(--tw-text-opacity))
+}
+
+.drawer-side {
+    z-index: 9999;
+}
+
+.required::after {
+    content: '*';
+    color: #ce0e0e;
+    margin: 0 0.25rem;
+}
+
+.menu :where(li:not(.menu-title) > *:not(ul):not(details):not(.menu-title)),
+.menu :where(li:not(.menu-title) > details > summary:not(.menu-title)) {
+    text-align: start !important;
+}
+
+.table thead th.cursor-pointer div:after {
+    margin-right: 0.5rem;
+}
+
+[dir="rtl"] .table{
+    text-align: right;
+}
+
+[dir="rtl"] .checkbox:checked,
+[dir="rtl"] .checkbox[checked="true"],
+[dir="rtl"] .checkbox[aria-checked="true"] {
+    background-image:
+        linear-gradient(-45deg, transparent 65%, hsl(var(--chkbg)) 65.99%),
+        linear-gradient(45deg, transparent 75%, hsl(var(--chkbg)) 75.99%),
+        linear-gradient(-45deg, hsl(var(--chkbg)) 40%, transparent 40.99%),
+        linear-gradient(
+            45deg,
+            hsl(var(--chkbg)) 30%,
+            hsl(var(--chkfg)) 30.99%,
+            hsl(var(--chkfg)) 40%,
+            transparent 40.99%
+        ),
+        linear-gradient(-45deg, hsl(var(--chkfg)) 50%, hsl(var(--chkbg)) 50.99%) !important;
+}
+
+[dir="rtl"] .menu :where(li ul) {
+    margin-right: 1rem;
+    padding-right: 0.5rem;
+}
+
+[dir="rtl"] .collapse-plus > .collapse-title::after {
+  right: auto;
+  left: 1.4rem; 
+}
+
+/* FullCalendar events (sessions) */
+.fc-event {
+    cursor: pointer;
+}

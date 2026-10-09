@@ -1,0 +1,8 @@
+# IS Inventory, operated by UBQ Solutions FZ-LLC — security contact (RFC 9116)
+# If you believe you've found a security vulnerability in IS Inventory, please tell us.
+
+Contact: mailto:security@gymflyte.com
+Expires: 2027-08-31T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://www.gymflyte.com/.well-known/security.txt
+Policy: https://www.gymflyte.com/security

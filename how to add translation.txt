@@ -1,0 +1,198 @@
+1: go to public 
+2: go to locales locales ar / en and
+3: modify common.json accordingly
+4: on top of the module please add  :::::          import { useTranslation } from 'react-i18next';
+5: inside the default function pelase  add  :::::  const { t, i18n } = useTranslation('common');
+6: and to actually do the translation please do t('users.title') according to common.json
+
+
+
+
+
+
+
+
+as for how i got it to work
+1: npm install next-i18next
+
+2: add middleware.ts in roon dir (this basically depends on cookies to get the language instad of url)
+contents :
+import { NextRequest, NextResponse } from 'next/server';
+
+export function middleware(request: NextRequest) {
+  const cookieLocale = request.cookies.get('NEXT_LOCALE')?.value;
+
+  const headerLocale =
+    request.headers.get('accept-language')?.split(',')[0].split('-')[0];
+
+  const locale = cookieLocale || headerLocale || 'en';
+
+  const response = NextResponse.next();
+  response.cookies.set('NEXT_LOCALE', locale);
+  return response;
+}
+
+3: add the locales/ar locales/en folders inside public
+
+4: in the next.config.js do the following
+a: add to the top of the file const nextI18nextConfig = require('./next-i18next.config');
+b: and in the const nextConfig add  i18n: {
+    defaultLocale: nextI18nextConfig.i18n.defaultLocale,
+    locales: nextI18nextConfig.i18n.locales,
+  }
+
+5: inside the src dir add the i18m folder and inside it add 
+a:client.ts 
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+
+const getInitialLocale = () => {
+  if (typeof window !== 'undefined') {
+    const match = document.cookie.match(/(?:^|; )NEXT_LOCALE=([^;]*)/);
+    return match?.[1] || 'en';
+  }
+  return 'en';
+};
+
+i18n
+  .use(initReactI18next)
+  .init({
+    lng: getInitialLocale(),
+    fallbackLng: 'en',
+    supportedLngs: ['en', 'ar'],
+    ns: ['common'],
+    defaultNS: 'common',
+    debug: process.env.NODE_ENV === 'development',
+    interpolation: {
+      escapeValue: false,
+    },
+    resources: {
+      en: {
+        common: require('@/../public/locales/en/common.json'),
+      },
+      ar: {
+        common: require('@/../public/locales/ar/common.json'),
+      },
+    },
+  });
+
+export default i18n;
+
+b: server.ts
+import { createInstance } from 'i18next';
+import { fallbackLng, languages } from './settings';
+import { cookies } from 'next/headers';
+import { initReactI18next } from 'react-i18next';
+
+export async function serverTranslation(ns: string | string[] = 'common') {
+  const cookieLocale = cookies().get('NEXT_LOCALE')?.value;
+  const lng = languages.includes(cookieLocale as any) ? cookieLocale : fallbackLng;
+  const namespaces = Array.isArray(ns) ? ns : [ns];
+
+  const resources: any = {
+    [lng]: {},
+  };
+
+  for (const namespace of namespaces) {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || ''}/locales/${lng}/${namespace}.json`);
+    resources[lng][namespace] = await response.json();
+  }
+
+  const i18nInstance = createInstance();
+
+  await i18nInstance
+    .use(initReactI18next)
+    .init({
+      lng,
+      fallbackLng,
+      supportedLngs: languages as unknown as string[],
+      ns: namespaces,
+      defaultNS: 'common',
+      resources,
+      interpolation: { escapeValue: false },
+    });
+
+  return {
+    t: i18nInstance.t,
+    i18n: i18nInstance,
+    locale: lng,
+  };
+}
+
+c: settings.ts 
+export const languages = ['en', 'ar'] as const;
+export const fallbackLng = 'en';
+
+6: in the root dir add 
+next-i18next.config.js file
+/** @type {import('next-i18next').UserConfig} */
+module.exports = {
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'ar'],
+    localeDetection: true,
+  },
+  reloadOnPrerender: process.env.NODE_ENV === 'development',
+};
+
+7: next you need to modify the layout.tsx file
+import { cookies } from "next/headers";
+import { dir } from "i18next";
+import { fallbackLng } from "@/i18n/settings";
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const locale = cookies().get("NEXT_LOCALE")?.value || fallbackLng;
+  const direction = dir(locale); // "rtl" or "ltr"
+
+  return (
+    <html lang={locale} dir={direction} data-theme="gymFlyte" className="h-full">
+      <body className="antialiased">
+        <Providers>{children}</Providers>
+      </body>
+    </html>
+  );
+
+8: next you need to modify the providers.tsx file 
+import { I18nextProvider } from 'react-i18next';
+import i18n from '@/i18n/client';
+<I18nextProvider i18n={i18n}>{children}</I18nextProvider>;
+
+
+9: add the language switcher and use it
+'use client';
+
+import { useEffect, useState } from 'react';
+
+export default function LanguageSwitcher() {
+  const [locale, setLocale] = useState('en');
+
+  useEffect(() => {
+    const match = document.cookie.match(/(?:^|; )NEXT_LOCALE=([^;]*)/);
+    setLocale(match?.[1] || 'en');
+  }, []);
+
+  const toggleLanguage = () => {
+    const newLocale = locale === 'en' ? 'ar' : 'en';
+    document.cookie = `NEXT_LOCALE=${newLocale}; path=/`;
+    window.location.reload();
+  };
+
+  return (
+    <button onClick={toggleLanguage} className="btn btn-sm">
+      {locale === 'en' ? 'العربية' : 'English'}
+    </button>
+  );
+}
+
+
+
+
+
+
+
+
+OR BASICALLY REVIEW THE PR

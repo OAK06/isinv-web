@@ -1,0 +1,15 @@
+node_modules
+.next
+.git
+*.log
+# Never bake local secrets into an image layer; keep only the example the build needs
+.env
+.env.*
+!.env.example
+# Not needed inside the image
+kube
+.github
+.vscode
+.DS_Store
+CLAUDE.md
+.claude

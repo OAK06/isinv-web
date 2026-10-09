@@ -1,0 +1,30 @@
+name: test
+
+# Runs the frontend checks on every push / PR. NOTE: GitHub Actions minutes are not
+# available on the current free Teams plan, so this will not execute until the account
+# is upgraded — it is intentionally committed now so it "just works" once minutes are on.
+on:
+  push:
+  pull_request:
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          # No `cache: yarn` — yarn.lock is intentionally gitignored in this repo,
+          # so there's no lockfile for the cache/hash to key off.
+
+      # --ignore-engines: a Vitest sub-dep (undici) wants Node >=22.19; runtime is fine.
+      # No --frozen-lockfile for the same gitignored-lockfile reason.
+      - run: yarn install --ignore-engines
+
+      - name: Typecheck (baseline 0 errors)
+        run: npx tsc --noEmit
+
+      - name: Unit tests
+        run: yarn test

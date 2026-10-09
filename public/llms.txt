@@ -1,0 +1,53 @@
+# IS Inventory
+
+> IS Inventory is all-in-one, web-based management software (SaaS) for any membership-based studio or club — gyms and fitness studios, swim schools, yoga & Pilates studios, martial arts academies, and dance studios — including multi-site franchise groups. It covers memberships, class scheduling, online bookings, online payments and POS, QR-code access control, and real-time analytics — in one dashboard that works on any device with no app installation. Each industry has its own tailored landing page on a dedicated subdomain, but the underlying platform is identical. IS Inventory is a product of UBQ Solutions FZ-LLC, based in Ras Al Khaimah, UAE, serving customers internationally. Start free with a 1-month trial (no credit card required) or book a personalized demo.
+
+## Features
+
+- **Membership management** (https://www.gymflyte.com/membership-management): registration to renewals, freezing, transfers, member records and packages, automated check-ins.
+- **Analytics** (https://www.gymflyte.com/analytics): real-time revenue, membership KPIs, and multi-branch performance dashboards for faster business decisions.
+- **Scheduling** (https://www.gymflyte.com/scheduling): create and manage class sessions and trainer schedules with customizable access, real-time updates, and full calendar control.
+- **Booking** (https://www.gymflyte.com/booking): members book classes in seconds; reduces no-shows and admin work.
+- **Access control** (https://www.gymflyte.com/access-control): QR-code check-ins with membership-based permissions, fast secure entry, and detailed access reports.
+- **Online payments** (https://www.gymflyte.com/online-payments): accepts Apple Pay, Mada, STC Pay, Tabby, and more; recurring payments and smart invoicing.
+
+## Key facts
+
+- Multi-branch: manage several locations, staff, and trainers from one account with corporate-level reports.
+- Mobile friendly: fully responsive web app — no installation, works on phones and tablets, real-time sync across devices.
+- Bilingual member-facing support (Arabic/English); the website itself is available in English, Arabic, German, French, Dutch, and Japanese.
+- Data import and quick onboarding; typical go-live within one business day.
+- **Member portal** (customer-facing, included): members get their own login to manage their profile, view a QR entry pass, see and pay their bills, manage saved cards, and browse a gym directory to join. They can book classes from a live calendar — including drop-in bookings that need NO membership, paid online or settled at the gym — and one account can belong to several gyms at once. If online payments are on, a booking is charged and marked paid instantly; otherwise it's booked and settled by staff.
+
+## Pricing
+
+Base prices in USD; the pricing page automatically shows local-currency equivalents. Every plan includes the same core feature set — the only base-price difference is the commitment length. Optional paid addons (POS & Inventory, Advanced Reports) can be added or removed at any time for a monthly fee on top of the plan.
+
+- Monthly: $99/month (regular $125)
+- 6 months: $549 (regular $785)
+- Yearly: $999 (regular $1,650)
+
+Every new gym gets a 1-month free trial with every module unlocked — no credit card required. Self-service signup: https://www.gymflyte.com/get-started
+
+Details: https://www.gymflyte.com/pricing
+
+## Pages
+
+- [Home](https://www.gymflyte.com/): product overview, features, mobile access, member portal preview.
+- [Pricing](https://www.gymflyte.com/pricing): plans, addons, local-currency prices, pricing FAQ.
+- [Get started](https://www.gymflyte.com/get-started): self-service signup with a 1-month free trial (no card needed).
+- [Book a demo](https://www.gymflyte.com/owner-signup): request a free personalized demo.
+
+## Solutions by industry
+
+Tailored marketing landing pages per vertical (same platform, industry-specific messaging). Signup and the app run on the main domain.
+
+- [Gyms & Fitness](https://gym.gymflyte.com/)
+- [Swim schools](https://swim.gymflyte.com/)
+- [Yoga & Pilates studios](https://yoga.gymflyte.com/)
+- [Martial arts academies](https://dojo.gymflyte.com/)
+- [Dance studios](https://dance.gymflyte.com/)
+
+## Company
+
+IS Inventory is a product of UBQ Solutions FZ-LLC, based in Ras Al Khaimah, UAE, serving customers internationally.
