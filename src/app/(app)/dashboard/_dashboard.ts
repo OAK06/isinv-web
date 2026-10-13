@@ -5,21 +5,14 @@ const getWidget = (path: string, branchID: number) => axios.get(`/api/dashboard/
 
 export const DashboardService = {
     getPlanRevenues: (id: number) => getWidget('plan-revenues', id),
-    getNewSubscriptions: (id: number) => getWidget('new-subscriptions', id),
-    getTotalMembers: (id: number) => getWidget('total-members', id),
-    getActiveMembers: (id: number) => getWidget('active-members', id),
-    getRenewalsRate: (id: number) => getWidget('renewals-rate', id),
-    getPlanSales: (id: number) => getWidget('plan-sales', id),
-    getPeakHours: (id: number) => getWidget('peak-hours', id),
     getInventoryAlerts: (id: number) => getWidget('inventory-alerts', id),
-    getLeadFunnel: (id: number) => getWidget('lead-funnel', id),
-    getRecentEntries: (id: number) => getWidget('recent-entries', id),
     getMyClasses: (id: number) => getWidget('my-classes', id),
     getCheckinsToday: (id: number) => getWidget('checkins-today', id),
     getNewApplications: (id: number) => getWidget('new-applications', id),
     getTodaysSales: (id: number) => getWidget('todays-sales', id),
-    getCompanyRevenue: (id: number) => getWidget('company-revenue', id),
-    getBranchRevenueBreakdown: (id: number) => getWidget('branch-revenue-breakdown', id),
+    getPoCostsMonth: (id: number) => getWidget('po-costs-month', id),
+    getPoCostsToday: (id: number) => getWidget('po-costs-today', id),
+    getCategoryCostSales: (id: number) => getWidget('category-cost-sales', id),
 }
 
 /** Card keys the current user should see on this branch (silent — falls back to none). */

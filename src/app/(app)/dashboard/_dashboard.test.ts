@@ -18,21 +18,14 @@ beforeEach(() => { state.rec.length = 0 })
 describe("_dashboard wrappers", () => {
 	const widgets: [keyof typeof DashboardService, string][] = [
 		["getPlanRevenues", "plan-revenues"],
-		["getNewSubscriptions", "new-subscriptions"],
-		["getTotalMembers", "total-members"],
-		["getActiveMembers", "active-members"],
-		["getRenewalsRate", "renewals-rate"],
-		["getPlanSales", "plan-sales"],
-		["getPeakHours", "peak-hours"],
 		["getInventoryAlerts", "inventory-alerts"],
-		["getLeadFunnel", "lead-funnel"],
-		["getRecentEntries", "recent-entries"],
 		["getMyClasses", "my-classes"],
 		["getCheckinsToday", "checkins-today"],
 		["getNewApplications", "new-applications"],
 		["getTodaysSales", "todays-sales"],
-		["getCompanyRevenue", "company-revenue"],
-		["getBranchRevenueBreakdown", "branch-revenue-breakdown"],
+		["getPoCostsMonth", "po-costs-month"],
+		["getPoCostsToday", "po-costs-today"],
+		["getCategoryCostSales", "category-cost-sales"],
 	]
 
 	it("every DashboardService widget GETs its own /api/dashboard/<path>?branch_id=<id> URL", async () => {

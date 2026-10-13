@@ -8,10 +8,6 @@ import { faGlobe, faChevronDown, faCheck } from '@fortawesome/free-solid-svg-ico
 const options = [
   { value: 'en', label: 'English' },
   { value: 'ar', label: 'العربية' },
-  { value: 'de', label: 'Deutsch' },
-  { value: 'fr', label: 'Français' },
-  { value: 'nl', label: 'Nederlands' },
-  { value: 'ja', label: '日本語' },
 ];
 
 export default function LanguageSwitcher({ inline = false }: { inline?: boolean }) {

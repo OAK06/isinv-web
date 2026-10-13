@@ -57,7 +57,8 @@ export default function StartPosSessionModal({isOpen, onClose, onSubmitSuccess, 
         <div className="modal" role="dialog">
             <div className="modal-box">
                 <form onSubmit={formSubmit}> {isLoading && <Loading />}
-                    <div className="text-xl text-primary text-bold mb-4">{t('posSessions.addTitle')}</div>
+                    <div className="text-xl text-primary text-bold mb-1">{t('posSessions.addTitle')}</div>
+                    <p className="text-sm text-base-content/60 mb-4">{t('posSessions.openCashHint')}</p>
                     <div className="grid gap-2 grid-cols-1 sm:grid-cols-2 mb-3">
                         <div className="sm:col-span-2">
                             <label className="label justify-start label-text required">{t('posSessions.openCash')}</label>

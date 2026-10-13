@@ -1851,7 +1851,8 @@
       "openCash": "Open Cash",
       "closeCash": "Close Cash",
       "status": "Status"
-    }
+    },
+    "openCashHint": "How much cash do you have in your register right now? Enter the opening balance."
   },
   "onboarding": {
     "title": "Get started with IS Inventory",
@@ -2207,7 +2208,10 @@
       "new_applications": "New applications",
       "todays_sales": "Today's sales",
       "company_total_revenue": "Total revenue (all branches)",
-      "branch_revenue_breakdown": "Revenue by branch"
+      "branch_revenue_breakdown": "Revenue by branch",
+      "po_costs_month": "Purchase Costs (This Month)",
+      "po_costs_today": "Purchase Costs (Today)",
+      "category_cost_sales": "Category Costs & Sales"
     },
     "noData": "No data yet."
   },

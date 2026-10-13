@@ -9,8 +9,8 @@ import { branch } from "@/_state/globalStore"
 import Loading from "@/app/(app)/_components/loading"
 import Header from "@/app/(app)/_components/header"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faCheckCircle, faDumbbell, faShieldHalved } from "@fortawesome/free-solid-svg-icons"
-import { getBranch, getMyDashboardCards } from "./_dashboard"
+import { faDumbbell, faShieldHalved } from "@fortawesome/free-solid-svg-icons"
+import { getMyDashboardCards } from "./_dashboard"
 import { SMALL_CARD_REGISTRY, WIDE_CARD_REGISTRY } from "./_cards"
 
 export default function Dashboard() {
@@ -18,27 +18,20 @@ export default function Dashboard() {
 	const { user } = useAuth({ middleware: "auth" })
 	const [branchID] = useAtom(branch)
 	const [cards, setCards] = useState<string[] | null>(null)
-	const [onboardingSteps, setOnboardingSteps] = useState<any>({})
 
 	const isOwner = user?.permissions?.includes("view owner dashboard")
+	// Company Managers run the shop day-to-day, so they get the dashboard surfaces too.
+	const canSeeGettingStarted = isOwner || user?.roles?.includes("Company Manager")
 
 	useEffect(() => {
 		if (!branchID || branchID === -1) return
 		getMyDashboardCards(branchID).then(setCards)
-		if (isOwner) getBranch(branchID).then((r: any) => setOnboardingSteps(r.response?.onboarding_steps || {}))
-	}, [branchID, isOwner])
+	}, [branchID])
 
 	if (!user) return <Loading />
 
-	const steps = Object.entries(onboardingSteps || {})
-	const completedSteps = steps.filter(([, value]) => value === true)
-	// Per-user security nudge: prompt owners to turn on 2FA (links to the profile page).
-	const mfaNeeded = isOwner && !user.two_factor_enabled
-	const onboardingRoutes: any = { added_staff: "/staff/add", created_plan: "/plans/add", created_class: "/classes/add", invited_member: "/members/add" }
-	const onboardingTitles: any = {
-		added_staff: t("onboarding.addedStaff"), created_plan: t("onboarding.createdPlan"),
-		created_class: t("onboarding.createdClass"), invited_member: t("onboarding.invitedMember"),
-	}
+	// Per-user security nudge: prompt owner/manager to turn on 2FA (links to the profile page).
+	const mfaNeeded = canSeeGettingStarted && !user.two_factor_enabled
 
 	// Render in registry order (stable), only the cards this user's roles enable.
 	const activeSmallCards = cards ? Object.keys(SMALL_CARD_REGISTRY).filter(k => cards.includes(k)) : []
@@ -55,7 +48,7 @@ export default function Dashboard() {
 			containerClass="flex justify-between items-start"
 		/>
 
-		{isOwner && (mfaNeeded || (steps.length > 0 && completedSteps.length < steps.length)) && (
+		{mfaNeeded && (
 			<div className="card mt-6 border border-base-200 shadow-sm bg-base-100">
 				<div className="card-body">
 					<h2 className="card-title text-xl mb-4">
@@ -63,35 +56,19 @@ export default function Dashboard() {
 						{t("onboarding.title")}
 					</h2>
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-						{/* Security first: prompt to enable 2FA → profile page (where the 2FA card lives). */}
-						{mfaNeeded && (
-							<Link href="/profile">
-								<div className="card bg-base-100 border border-accent/50 p-4 flex-row items-center gap-2 transition-colors hover:border-accent">
-									<div className="min-w-10 min-h-10 rounded-full flex items-center justify-center bg-accent/10 text-accent shrink-0">
-										<FontAwesomeIcon icon={faShieldHalved} className="text-xl" />
-									</div>
-									<div>
-										<p className="text-lg font-semibold">{t("onboarding.enableMfa")}</p>
-										<p className="text-xs text-base-content/60">{t("onboarding.enableMfaHint")}</p>
-									</div>
+						{/* Security nudge: prompt to enable 2FA → profile page (where the 2FA card lives). */}
+						<Link href="/profile">
+							<div className="card bg-base-100 border border-accent/50 p-4 flex-row items-center gap-2 transition-colors hover:border-accent">
+								<div className="min-w-10 min-h-10 rounded-full flex items-center justify-center bg-accent/10 text-accent shrink-0">
+									<FontAwesomeIcon icon={faShieldHalved} className="text-xl" />
 								</div>
-							</Link>
-						)}
-						{steps.map(([key, value], j) => {
-							const completed = value === true
-							const content = (
-								<div className={`card ${completed ? "bg-base-200" : "bg-base-100"} border border-base-200 p-4 flex-row items-center gap-2 transition-colors hover:border-primary/40`}>
-									<div className={`min-w-10 min-h-10 rounded-full flex items-center justify-center ${!completed ? "border border-base-300 text-base-content/60" : ""}`}>
-										{!completed ? <span className="text-xl">{j + 1}</span> : <FontAwesomeIcon icon={faCheckCircle} className="text-4xl text-success" />}
-									</div>
-									<div><p className="text-lg font-semibold">{onboardingTitles[key as string]}</p></div>
+								<div>
+									<p className="text-lg font-semibold">{t("onboarding.enableMfa")}</p>
+									<p className="text-xs text-base-content/60">{t("onboarding.enableMfaHint")}</p>
 								</div>
-							)
-							return <div key={j}>{!completed ? <Link href={onboardingRoutes[key as string]}>{content}</Link> : content}</div>
-						})}
+							</div>
+						</Link>
 					</div>
-					<progress className="progress progress-primary mt-2" value={completedSteps.length} max={steps.length}></progress>
-					<div className="text-lg mt-2">{completedSteps.length} / {steps.length} {t("completed")}</div>
 				</div>
 			</div>
 		)}

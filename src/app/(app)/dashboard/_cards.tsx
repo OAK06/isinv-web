@@ -4,11 +4,10 @@ import { ReactNode, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
-	faMoneyBillTrendUp, faUserPlus, faUsers, faUserCheck, faDoorOpen, faCashRegister, faBuildingColumns,
+	faMoneyBillTrendUp, faDoorOpen, faCashRegister, faFileInvoiceDollar, faCalendarDay,
 } from "@fortawesome/free-solid-svg-icons"
-import RenewalChart from "@/app/(app)/dashboard/_components/renewalChart"
-import SalesChart from "@/app/(app)/dashboard/_components/salesChart"
 import { DashboardService } from "@/app/(app)/dashboard/_dashboard"
+import { formatCurrency } from "@/_helpers/currency"
 
 type CardProps = { branchID: number }
 
@@ -23,10 +22,6 @@ function useWidget<T>(fetcher: (id: number) => Promise<any>, branchID: number, p
 	}, [branchID])
 	return val
 }
-
-const Spinner = () => (
-	<div className="h-[300px] flex items-center justify-center"><span className="loading loading-spinner loading-md text-primary"></span></div>
-)
 
 /** Titled card shell. `bar` must be a literal Tailwind class so JIT keeps it. */
 function Shell({ cardKey, bar = "bg-primary", titleClass = "", children }: { cardKey: string, bar?: string, titleClass?: string, children: ReactNode }) {
@@ -63,53 +58,12 @@ function StatCard({ cardKey, icon, value }: { cardKey: string, icon: any, value:
 
 // ---- KPI / stat cards -----------------------------------------------------
 const RevenuesCard = ({ branchID }: CardProps) => <StatCard cardKey="kpi_revenues" icon={faMoneyBillTrendUp} value={useWidget(DashboardService.getPlanRevenues, branchID, r => r.value)} />
-const SubscriptionsCard = ({ branchID }: CardProps) => <StatCard cardKey="kpi_subscriptions" icon={faUserPlus} value={useWidget(DashboardService.getNewSubscriptions, branchID, r => r.value)} />
-const TotalMembersCard = ({ branchID }: CardProps) => <StatCard cardKey="kpi_total_members" icon={faUsers} value={useWidget(DashboardService.getTotalMembers, branchID, r => r.value)} />
-const ActiveMembersCard = ({ branchID }: CardProps) => <StatCard cardKey="kpi_active_members" icon={faUserCheck} value={useWidget(DashboardService.getActiveMembers, branchID, r => r.value)} />
 const CheckinsTodayCard = ({ branchID }: CardProps) => <StatCard cardKey="checkins_today" icon={faDoorOpen} value={useWidget(DashboardService.getCheckinsToday, branchID, r => r.value)} />
 const TodaysSalesCard = ({ branchID }: CardProps) => <StatCard cardKey="todays_sales" icon={faCashRegister} value={useWidget(DashboardService.getTodaysSales, branchID, r => r.value)} />
-const CompanyRevenueCard = ({ branchID }: CardProps) => <StatCard cardKey="company_total_revenue" icon={faBuildingColumns} value={useWidget(DashboardService.getCompanyRevenue, branchID, r => r.value)} />
-
-// ---- Charts ---------------------------------------------------------------
-const RenewalCard = ({ branchID }: CardProps) => {
-	const d = useWidget<any>(DashboardService.getRenewalsRate, branchID, r => r.data)
-	return <Shell cardKey="renewal_chart">{d ? <RenewalChart data={d} /> : <Spinner />}</Shell>
-}
-const SalesCard = ({ branchID }: CardProps) => {
-	const d = useWidget<any>(DashboardService.getPlanSales, branchID, r => r)
-	return <Shell cardKey="sales_chart">{d ? <SalesChart data={d} /> : <Spinner />}</Shell>
-}
+const PoCostsMonthCard = ({ branchID }: CardProps) => <StatCard cardKey="po_costs_month" icon={faFileInvoiceDollar} value={useWidget(DashboardService.getPoCostsMonth, branchID, r => r.value)} />
+const PoCostsTodayCard = ({ branchID }: CardProps) => <StatCard cardKey="po_costs_today" icon={faCalendarDay} value={useWidget(DashboardService.getPoCostsToday, branchID, r => r.value)} />
 
 // ---- Lists / custom -------------------------------------------------------
-const LeadFunnelCard = ({ branchID }: CardProps) => {
-	const { t } = useTranslation("common")
-	const leadFunnel = useWidget<any[]>(DashboardService.getLeadFunnel, branchID, r => r.data)
-	return (
-		<Shell cardKey="lead_funnel">
-			{leadFunnel ? (
-				leadFunnel.length ? (
-					<div className="flex flex-col gap-4">
-						{(() => {
-							const max = Math.max(...leadFunnel.map((l: any) => Number(l.count) || 0), 1)
-							return leadFunnel.map((lead: any, i: number) => (
-								<div key={i}>
-									<div className="mb-1 flex items-center justify-between text-sm">
-										<span>{t(`ownerDashboard.leadFunnel.${lead.label}`)}</span>
-										<span className="font-semibold">{lead.count}</span>
-									</div>
-									<div className="h-2.5 overflow-hidden rounded-full bg-base-200">
-										<div className="h-full rounded-full bg-primary transition-all duration-500" style={{ width: `${((Number(lead.count) || 0) / max) * 100}%`, opacity: Math.max(0.4, 1 - i * 0.15) }}></div>
-									</div>
-								</div>
-							))
-						})()}
-					</div>
-				) : <p className="text-sm text-base-content/50">{t("ownerDashboard.leadFunnel.noData")}</p>
-			) : <span className="loading loading-spinner loading-xs text-primary"></span>}
-		</Shell>
-	)
-}
-
 const InventoryAlertsCard = ({ branchID }: CardProps) => {
 	const { t } = useTranslation("common")
 	const inventoryAlerts = useWidget<any[]>(DashboardService.getInventoryAlerts, branchID, r => r.data)
@@ -126,49 +80,53 @@ const InventoryAlertsCard = ({ branchID }: CardProps) => {
 	)
 }
 
-const PeakHoursCard = ({ branchID }: CardProps) => {
+const CategoryCostSalesCard = ({ branchID }: CardProps) => {
 	const { t } = useTranslation("common")
-	const peakHours = useWidget<any[]>(DashboardService.getPeakHours, branchID, r => r.data)
+	const rows = useWidget<any[]>(DashboardService.getCategoryCostSales, branchID, r => r.data)
 	return (
-		<Shell cardKey="peak_hours">
-			{peakHours ? (() => {
-				const countOf = (row: any) => Number(row.count ?? row.entries ?? row.total ?? 0)
-				const rows = [...peakHours].sort((a: any, b: any) => a.hour - b.hour)
-				const max = Math.max(...rows.map(countOf), 0)
-				const peakHour = peakHours[0]?.hour
-				if (!rows.length) return <p className="text-sm text-base-content/50">{t("ownerDashboard.peakHours.noData")}</p>
-				return <>
-					<p className="text-sm text-base-content/60">{t("ownerDashboard.peakHours.subtitle")}: {peakHour != null ? `${peakHour}:00` : "-"}</p>
-					{max > 0 && (
-						<div className="mt-4 flex h-40 items-end gap-1" dir="ltr">
-							{rows.map((row: any) => (
-								<div key={row.hour} className="flex h-full min-w-0 flex-1 flex-col items-center justify-end gap-1">
-									<div className="tooltip flex w-full flex-1 items-end justify-center" data-tip={`${row.hour}:00 — ${countOf(row)}`}>
-										<div className={`w-full max-w-6 rounded-t ${row.hour === peakHour ? "bg-primary" : "bg-primary/30"} transition-colors hover:bg-primary/70`} style={{ height: `${Math.max(6, (countOf(row) / max) * 100)}%` }}></div>
-									</div>
-									<span className="text-[10px] leading-none text-base-content/50">{row.hour}</span>
+		<Shell cardKey="category_cost_sales">
+			{rows ? (
+				rows.length ? (
+					<>
+						{/* Per-category totals (name + cost + sales, like the listing page) */}
+						<div className="space-y-2">
+							{rows.map((row: any, i: number) => (
+								<div key={i} className="flex flex-wrap justify-between gap-x-4 text-sm border-b border-base-200 pb-2">
+									<span className="font-medium truncate">{row.name}</span>
+									<span className="flex gap-4 shrink-0" dir="ltr">
+										<span className="text-base-content/60">{t("categories.totalCost")}: <strong className="text-base-content">{formatCurrency(row.total_cost)}</strong></span>
+										<span className="text-base-content/60">{t("categories.totalSell")}: <strong className="text-primary">{formatCurrency(row.total_sell)}</strong></span>
+									</span>
 								</div>
 							))}
 						</div>
-					)}
-				</>
-			})() : <span className="loading loading-spinner loading-xs text-primary"></span>}
-		</Shell>
-	)
-}
 
-const RecentEntriesCard = ({ branchID }: CardProps) => {
-	const entries = useWidget<any[]>(DashboardService.getRecentEntries, branchID, r => r.data)
-	return (
-		<Shell cardKey="recent_entries" bar="bg-secondary">
-			<div className="space-y-3">
-				{entries?.map((entry: any, i: number) => (
-					<div key={i} className="flex justify-between text-sm border-b border-base-200 pb-2">
-						<span>{entry.fname} {entry.sname}</span>
-						<span className="text-base-content/50">{new Date(entry.created_at).toLocaleTimeString()}</span>
-					</div>
-				)) || <span className="loading loading-spinner loading-xs text-secondary"></span>}
-			</div>
+						{/* Grouped bar chart: cost vs sales per category (shared scale) */}
+						<div className="mt-6 flex items-center gap-4 text-xs text-base-content/60">
+							<span className="flex items-center gap-1.5"><span className="inline-block h-2.5 w-2.5 rounded-sm bg-base-300"></span>{t("categories.totalCost")}</span>
+							<span className="flex items-center gap-1.5"><span className="inline-block h-2.5 w-2.5 rounded-sm bg-primary"></span>{t("categories.totalSell")}</span>
+						</div>
+						<div className="mt-3 space-y-3" dir="ltr">
+							{(() => {
+								const max = Math.max(...rows.flatMap((r: any) => [Number(r.total_cost) || 0, Number(r.total_sell) || 0]), 1)
+								return rows.map((row: any, i: number) => (
+									<div key={i}>
+										<div className="mb-1 truncate text-xs text-base-content/60">{row.name}</div>
+										<div className="flex flex-col gap-1">
+											<div className="tooltip flex" data-tip={`${t("categories.totalCost")}: ${formatCurrency(row.total_cost)}`}>
+												<div className="h-3 min-w-[2px] rounded-sm bg-base-300 transition-all duration-500" style={{ width: `${((Number(row.total_cost) || 0) / max) * 100}%` }}></div>
+											</div>
+											<div className="tooltip flex" data-tip={`${t("categories.totalSell")}: ${formatCurrency(row.total_sell)}`}>
+												<div className="h-3 min-w-[2px] rounded-sm bg-primary transition-all duration-500" style={{ width: `${((Number(row.total_sell) || 0) / max) * 100}%` }}></div>
+											</div>
+										</div>
+									</div>
+								))
+							})()}
+						</div>
+					</>
+				) : <p className="text-sm text-base-content/50">{t("dashboardCards.noData")}</p>
+			) : <span className="loading loading-spinner loading-xs text-primary"></span>}
 		</Shell>
 	)
 }
@@ -215,46 +173,18 @@ const NewApplicationsCard = ({ branchID }: CardProps) => {
 	)
 }
 
-const BranchRevenueBreakdownCard = ({ branchID }: CardProps) => {
-	const { t } = useTranslation("common")
-	const rows = useWidget<any[]>(DashboardService.getBranchRevenueBreakdown, branchID, r => r.data)
-	return (
-		<Shell cardKey="branch_revenue_breakdown">
-			{rows ? (
-				rows.length ? (
-					<div className="space-y-3">
-						{rows.map((row: any) => (
-							<div key={row.branch_id} className="flex justify-between text-sm border-b border-base-200 pb-2">
-								<span className="font-medium truncate">{row.branch_name}</span>
-								<span className="font-semibold" dir="ltr">{row.total}</span>
-							</div>
-						))}
-					</div>
-				) : <p className="text-sm text-base-content/50">{t("dashboardCards.noData")}</p>
-			) : <span className="loading loading-spinner loading-xs text-primary"></span>}
-		</Shell>
-	)
-}
-
 export const SMALL_CARD_REGISTRY: Record<string, { Component: (p: CardProps) => JSX.Element }> = {
 	kpi_revenues: { Component: RevenuesCard },
-	kpi_subscriptions: { Component: SubscriptionsCard },
-	kpi_total_members: { Component: TotalMembersCard },
-	kpi_active_members: { Component: ActiveMembersCard },
+	po_costs_month: { Component: PoCostsMonthCard },
+	po_costs_today: { Component: PoCostsTodayCard },
 	checkins_today: { Component: CheckinsTodayCard },
 	todays_sales: { Component: TodaysSalesCard },
-	company_total_revenue: { Component: CompanyRevenueCard },
 }
 
-/** key → component + whether it spans 2 columns. Object order = render order. */
+/** key → component (wide = spans 2 columns). Object order = render order. */
 export const WIDE_CARD_REGISTRY: Record<string, { Component: (p: CardProps) => JSX.Element }> = {
-	renewal_chart: { Component: RenewalCard },
-	sales_chart: { Component: SalesCard },
-	lead_funnel: { Component: LeadFunnelCard },
+	category_cost_sales: { Component: CategoryCostSalesCard },
 	inventory_alerts: { Component: InventoryAlertsCard },
-	peak_hours: { Component: PeakHoursCard },
-	recent_entries: { Component: RecentEntriesCard },
 	my_classes_today: { Component: MyClassesCard },
 	new_applications: { Component: NewApplicationsCard },
-	branch_revenue_breakdown: { Component: BranchRevenueBreakdownCard },
 }

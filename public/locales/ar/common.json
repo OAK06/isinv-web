@@ -1851,7 +1851,8 @@
       "openCash": "النقدية الافتتاحية",
       "closeCash": "النقدية الختامية",
       "status": "الحالة"
-    }
+    },
+    "openCashHint": "كم المبلغ النقدي الموجود في درجك الآن؟ أدخل الرصيد الافتتاحي."
   },
   "onboarding": {
     "title": "ابدأ رحلتك مع IS Inventory",
@@ -2207,7 +2208,10 @@
       "new_applications": "طلبات جديدة",
       "todays_sales": "مبيعات اليوم",
       "company_total_revenue": "إجمالي الإيرادات (كل الفروع)",
-      "branch_revenue_breakdown": "الإيرادات حسب الفرع"
+      "branch_revenue_breakdown": "الإيرادات حسب الفرع",
+      "po_costs_month": "تكاليف المشتريات (هذا الشهر)",
+      "po_costs_today": "تكاليف المشتريات (اليوم)",
+      "category_cost_sales": "تكاليف ومبيعات الفئات"
     },
     "noData": "لا توجد بيانات بعد."
   },
