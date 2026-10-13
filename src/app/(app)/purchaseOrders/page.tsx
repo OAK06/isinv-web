@@ -19,8 +19,8 @@ export default function PurchaseOrderList() {
 	const { user } = useAuth({ middleware: "auth" })
 	const actions = {
 		path: "/purchaseOrders",
-		view: user.permissions.includes('view purchases'), 
-		edit: false,
+		view: user.permissions.includes('view purchases'),
+		edit: user.permissions.includes('create purchases'),
 		delete: user.permissions.includes('delete purchases')
 	}
 	const [ branchID ] = useAtom(branch)

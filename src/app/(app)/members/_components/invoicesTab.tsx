@@ -1,4 +1,5 @@
 import { useTranslation } from "next-i18next"
+import { formatNumber } from "@/_helpers/currency"
 
 export default function InvoicesTab({data, className}: {data?: string[], className?: string}) {
     const { t } = useTranslation('common')
@@ -43,7 +44,7 @@ export default function InvoicesTab({data, className}: {data?: string[], classNa
                                     {invoice.invoice_items?.map((invoice_item: any, itemIndex: number) => (
                                         <div key={itemIndex} className="grid grid-cols-5 gap-4 py-2 border-b border-base-300">
                                             <div className="col-span-2 text-sm">{invoice_item.name}</div>
-                                            <div className="text-sm text-center">{invoice_item.quantity}</div>
+                                            <div className="text-sm text-center">{formatNumber(invoice_item.quantity)}</div>
                                             <div className="text-sm text-center">${invoice_item.price}</div>
                                             <div className="text-sm text-center font-semibold">${invoice_item.total_price}</div>
                                         </div>

@@ -308,7 +308,8 @@
     "refund": "Refund",
     "confirmRefund": "Refund this sale? This returns the items to stock and cannot be undone.",
     "status": "Status",
-    "refundSuccess": "Sale refunded and items returned to stock."
+    "refundSuccess": "Sale refunded and items returned to stock.",
+    "unitPrice": "Unit Price"
   },
   "refunds": {
     "listTitle": "Refunds",
@@ -435,7 +436,9 @@
       "active": "Active",
       "createdBy": "Created By",
       "updatedBy": "Updated By"
-    }
+    },
+    "totalCost": "Total Cost",
+    "totalSell": "Total Sell"
   },
   "inventories": {
     "listTitle": "Inventories",
@@ -482,7 +485,10 @@
     "costGst": "Tax per Unit",
     "costPriceHint": "Leave blank to use product cost",
     "supplierHint": "Type or pick a supplier",
-    "receiptPhoto": "Receipt photo"
+    "receiptPhoto": "Receipt photo",
+    "editTitle": "Edit Purchase Order",
+    "editFormBtn": "Save Changes",
+    "updatedMessage": "Purchase order updated successfully"
   },
   "stocktakes": {
     "listTitle": "Stocktakes",

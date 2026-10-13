@@ -83,6 +83,15 @@ export default function SalesAdd() {
 		)
 	}
 
+	const handlePriceInputChange = (ev: ChangeEvent<HTMLInputElement>, product: any) => {
+		const newPrice = ev.target.value
+		setCart(prev =>
+			prev.map(item =>
+				item.id === product.id ? { ...item, sell_price: newPrice === '' ? '' : Number(newPrice) } : item
+			)
+		)
+	}
+
 	const handleAddClick = (product :any) => {
 		let found = false
 		setCart(prev => {
@@ -118,7 +127,9 @@ export default function SalesAdd() {
             return store.set(responseMessage, { type: 'alert', text: t('sales.alertProduct') })
 
         const data = {
-            items: cart,
+            // Coerce any blank custom-price field to a number so the backend's
+            // required numeric validation passes.
+            items: cart.map((item: any) => ({ ...item, sell_price: Number(item.sell_price) || 0 })),
             branch_id: branchID,
             total_price: total,
             customer_name: customerName,
@@ -272,7 +283,17 @@ export default function SalesAdd() {
 											<div className="flex justify-between items-start mb-2">
 												<div>
 													<h4 className="font-semibold">{cartItem.name}</h4>
-													<p className="text-sm text-base-content/60">{formatCurrency(Number(cartItem.sell_price) + Number(cartItem.sell_gst))} {t('sales.each')}</p>
+													<div className="flex items-center gap-2 mt-1">
+														<span className="text-sm text-base-content/60">{t('sales.unitPrice')}</span>
+														<input
+															type="number"
+															step="any"
+															min="0"
+															className="input input-bordered input-xs w-24 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+															value={cartItem.sell_price}
+															onChange={(ev) => handlePriceInputChange(ev, cartItem)}
+														/>
+													</div>
 												</div>
 												<button 
 													className="btn btn-xs btn-error btn-outline" 

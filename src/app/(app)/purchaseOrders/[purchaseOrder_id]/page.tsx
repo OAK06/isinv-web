@@ -8,6 +8,7 @@ import { PurchaseOrder } from "@/app/(app)/purchaseOrders/_purchaseOrder"
 import { useTranslation } from "next-i18next"
 import Header from "@/app/(app)/_components/header"
 import { fileUrl } from "@/_utils/fileUrl"
+import { formatNumber } from "@/_helpers/currency"
 
 export default function PurchaseView({ params }: any) {
     const { t } = useTranslation('common')
@@ -47,7 +48,7 @@ export default function PurchaseView({ params }: any) {
 					</div>
 					<div className="flex justify-between items-center py-2 border-b border-base-200">
 						<span className="font-semibold text-base-content/70">{t('purchases.quantity')}</span>
-						<span className="text-base-content">{data.inventory?.quantity}</span>
+						<span className="text-base-content">{formatNumber(data.inventory?.quantity)}</span>
 					</div>
 					<div className="flex justify-between items-center py-2 border-b border-base-200">
 						<span className="font-semibold text-base-content/70">{t('purchases.createdBy')}</span>

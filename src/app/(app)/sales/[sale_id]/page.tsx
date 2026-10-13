@@ -7,7 +7,7 @@ import { getSale } from "@/app/(app)/sales/_sale"
 import { Sale } from "@/app/(app)/sales/_sale"
 import { useTranslation } from "next-i18next"
 import Header from "@/app/(app)/_components/header"
-import { formatCurrency } from "@/_helpers/currency"
+import { formatCurrency, formatNumber } from "@/_helpers/currency"
 
 export default function SaleView({ params }: any) {
     const { t } = useTranslation('common')
@@ -46,7 +46,7 @@ export default function SaleView({ params }: any) {
 						<div className="text-base-content text-end">
 							{data.invoice_items?.map((invItem: any, i: number) => (
 								<span key={i} className="block">
-									{invItem.item?.name} <span className="text-sm text-base-content/60">x{invItem.quantity}</span>
+									{invItem.item?.name} <span className="text-sm text-base-content/60">x{formatNumber(invItem.quantity)}</span>
 								</span>
 							))}
 						</div>

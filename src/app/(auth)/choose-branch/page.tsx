@@ -52,12 +52,7 @@ export default function ChooseBranch() {
     // resolver page that just bounces forward again.
     useEffect(() => {
         if (!user) return
-        // Non-staff users (customers/members) go to the member portal — even with zero
-        // memberships (they get a join-a-gym empty state). Dual-role users (staff who
-        // also hold a membership) have staff access, so they default to the business
-        // area here and switch to the portal from the menu. Tenant-free signals, so this
-        // fires with no branch selected.
-        if (!user.has_staff_access) { router.replace('/member'); return }
+        // No customer portal in this app — every real user is staff/owner/admin.
         if (!user?.roles?.length) return
         // Super Admins have no tenant branches — they land in the dedicated admin
         // dashboard, not a tenant. (Login routes here for everyone; this is the

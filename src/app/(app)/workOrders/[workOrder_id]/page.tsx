@@ -11,7 +11,7 @@ import { useTranslation } from "next-i18next"
 import Header from "@/app/(app)/_components/header"
 import { useAuth } from "@/hooks/auth"
 import { useConfirm } from "@/_components/useConfirm"
-import { formatCurrency } from "@/_helpers/currency"
+import { formatCurrency, formatNumber } from "@/_helpers/currency"
 import { responseMessage, store } from "@/_state/globalStore"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faScrewdriverWrench } from "@fortawesome/free-solid-svg-icons"
@@ -177,7 +177,7 @@ export default function WorkOrderView({ params }: any) {
 									<tr key={item.id}>
 										<td>{t(`workOrders.itemTypes.${item.item_type}`)}</td>
 										<td>{item.product?.name || item.name}</td>
-										<td>{item.quantity}</td>
+										<td>{formatNumber(item.quantity)}</td>
 										<td>{item.width || '-'}</td>
 										<td>{item.height || '-'}</td>
 										<td>{formatCurrency(item.unit_price)}</td>

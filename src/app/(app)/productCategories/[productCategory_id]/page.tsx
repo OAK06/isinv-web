@@ -9,6 +9,7 @@ import { useEffect, useState } from "react"
 import { getCategory, ProductCategory } from "@/app/(app)/productCategories/_productCategory"
 import { useTranslation } from "next-i18next"
 import Header from "@/app/(app)/_components/header"
+import { formatCurrency } from "@/_helpers/currency"
 
 export default function CategoryView({ params }: any) {
     const { t } = useTranslation('common')
@@ -56,6 +57,21 @@ export default function CategoryView({ params }: any) {
 							<span className="font-semibold text-base-content/70">{t('categories.updatedBy')}</span>
 							<span className="text-base-content text-end">{data.updated_by?.name}</span>
 						</div>
+					</div>
+				</div>
+			</div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+				<div className="card bg-base-100 border border-base-200 shadow-sm">
+					<div className="card-body">
+						<span className="text-sm font-semibold text-base-content/60">{t('categories.totalCost')}</span>
+						<span className="text-2xl font-bold text-base-content">{formatCurrency(data.total_cost)}</span>
+					</div>
+				</div>
+				<div className="card bg-base-100 border border-base-200 shadow-sm">
+					<div className="card-body">
+						<span className="text-sm font-semibold text-base-content/60">{t('categories.totalSell')}</span>
+						<span className="text-2xl font-bold text-primary">{formatCurrency(data.total_sell)}</span>
 					</div>
 				</div>
 			</div>

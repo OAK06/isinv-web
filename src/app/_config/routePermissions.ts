@@ -171,6 +171,7 @@ export const ROUTE_PERMISSIONS: { pattern: RegExp, permissions: string[], restri
 /* purchaseOrders */
 { pattern: /^\/purchaseOrders$/, permissions: ['view purchases'], module: 'pos'},
 { pattern: /^\/purchaseOrders\/add$/, permissions: ['create purchases'], module: 'pos'},
+{ pattern: /^\/purchaseOrders\/\d+\/edit$/, permissions: ['create purchases'], module: 'pos'},
 { pattern: /^\/purchaseOrders\/\d+$/, permissions: ['view purchases'], module: 'pos'},
 
 /* refunds */

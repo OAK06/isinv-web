@@ -392,6 +392,10 @@ export default function BaseTable({ data, actions, getListFunction, deleteFuncti
                                                 else if (typeof value === 'string' && isDate(value)) {
                                                     content = formatDate(value)
                                                 }
+                                                // Trim trailing zero decimals on numeric cells (prices/quantities): "5.00" -> "5".
+                                                else if (typeof value === 'string' && /^-?\d+\.\d+$/.test(value)) {
+                                                    content = parseFloat(value).toString()
+                                                }
                                                 return <td key={j} className="max-w-xs truncate" title={String(content)}>{content}</td>
                                             })}
                                             <td>
