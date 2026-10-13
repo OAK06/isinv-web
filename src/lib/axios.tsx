@@ -2,6 +2,7 @@ import { requestCount, responseMessage, store, validationErrors } from "@/_state
 import Axios from "axios"
 import i18n from "@/i18n/client"
 import { takeListParams } from "@/lib/listParams"
+import { compressFormDataImages } from "@/app/_helpers/compressImage"
 
 const axios = Axios.create({
 	baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
@@ -30,7 +31,13 @@ const releaseController = (config: any) => {
 }
 
 axios.interceptors.request.use(
-	(config) => {
+	async (config) => {
+		// Downscale/compress any image being uploaded (camera photos are multi-MB).
+		// Single chokepoint for every upload form; non-images pass through untouched.
+		if (config.data instanceof FormData) {
+			config.data = await compressFormDataImages(config.data)
+		}
+
 		// List requests always carry `page=`; inject BaseTable's one-shot
 		// per_page/search onto that next request only (see lib/listParams).
 		if (config.url && /[?&]page=/.test(config.url)) {

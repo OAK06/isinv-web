@@ -1,7 +1,9 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { FormEvent, useEffect, useState } from "react"
+import { FormEvent, useEffect, useRef, useState } from "react"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faXmark } from "@fortawesome/free-solid-svg-icons"
 
 import { addPurchase, getCompanyBranches, getSuppliers, getProducts } from "@/app/(app)/purchaseOrders/_purchaseOrder"
 import { useAtom } from "jotai"
@@ -23,6 +25,7 @@ export default function PurchaseOrderAdd() {
 	const [validErrors] = useAtom(validationErrors)
 	const [ posRegisterID ] = useAtom(posRegister)
 	const [selectedBranch, setSelectedBranch] = useState<number | null>(null)
+	const receiptPhotoRef = useRef<HTMLInputElement>(null)
 	// Supplier is a type-or-pick combobox: a typed name that matches a known
 	// supplier sends supplier_id; an unknown name is saved as free-text supplier_name.
 	const [supplierInput, setSupplierInput] = useState("")
@@ -185,7 +188,12 @@ export default function PurchaseOrderAdd() {
 							<label className="label justify-start">
 								<span className="label-text font-semibold">{t('purchases.receiptPhoto')}</span>
 							</label>
-							<input name="receipt_photo" type="file" accept="image/*" className="file-input file-input-bordered input-sm w-full" />
+							<div className="flex items-center gap-2">
+								<input ref={receiptPhotoRef} name="receipt_photo" type="file" accept="image/*" className="file-input file-input-bordered input-sm w-full" />
+								<button type="button" aria-label={t('close')} onClick={() => { if (receiptPhotoRef.current) receiptPhotoRef.current.value = '' }} className="btn btn-ghost btn-sm btn-square">
+									<FontAwesomeIcon icon={faXmark} />
+								</button>
+							</div>
 							<InputError messages={validErrors.receipt_photo} />
 						</div>
 						<div className="lg:col-span-2">
