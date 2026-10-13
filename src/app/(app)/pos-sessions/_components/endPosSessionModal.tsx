@@ -11,6 +11,7 @@ import { useTranslation } from "next-i18next"
 import { scrollToFirstInvalidElement, validateForm } from "@/app/_helpers/validation"
 import ModalPortal from "@/app/(app)/_components/modalPortal"
 import { endPosSession } from "@/app/(app)/pos-sessions/_posSession"
+import { formatCurrency } from "@/_helpers/currency"
 
 type Props = {
     isOpen: boolean
@@ -18,9 +19,10 @@ type Props = {
     sessionID: number
     onSubmitSuccess?: () => void
     cancelBtn: { display: boolean, label?: string }
+    reconciliation?: { expected_cash?: number, sales?: number, refunds?: number, purchases?: number, open_cash?: number } | null
 }
 
-export default function EndPosSessionModal({isOpen, onClose, sessionID, onSubmitSuccess, cancelBtn}: Props) {
+export default function EndPosSessionModal({isOpen, onClose, sessionID, onSubmitSuccess, cancelBtn, reconciliation}: Props) {
     const { t } = useTranslation('common')
 	const { user } = useAuth({ middleware: "auth" })
 	const [ branchID ] = useAtom(branch)
@@ -29,6 +31,10 @@ export default function EndPosSessionModal({isOpen, onClose, sessionID, onSubmit
 	const [validErrors] = useAtom(validationErrors)
 	const [activePosSessionID, setActivePosSessionID] = useAtom(activePosSession)
 	const [ posRegisterID ] = useAtom(posRegister)
+	const [countedCash, setCountedCash] = useState<string>('')
+
+	const expected = Number(reconciliation?.expected_cash ?? 0)
+	const variance = countedCash === '' ? null : Number(countedCash) - expected
 
     const formSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault()  
@@ -56,10 +62,23 @@ export default function EndPosSessionModal({isOpen, onClose, sessionID, onSubmit
             <div className="modal-box">
                 <form onSubmit={formSubmit}> {isLoading && <Loading />}
                     <div className="text-xl text-primary text-bold mb-4">{t('posSessions.endTitle')}</div>
+                    {reconciliation && (
+                        <div className="mb-4 rounded-lg bg-base-200 p-3 text-sm space-y-1">
+                            <div className="flex justify-between"><span className="text-base-content/60">{t('posSessions.expectedCash')}</span><span className="font-semibold" dir="ltr">{formatCurrency(expected)}</span></div>
+                            {variance !== null && (
+                                <div className="flex justify-between">
+                                    <span className="text-base-content/60">{t('posSessions.variance')}</span>
+                                    <span className={`font-semibold ${variance === 0 ? 'text-success' : 'text-error'}`} dir="ltr">
+                                        {formatCurrency(variance)} {variance === 0 ? `· ${t('posSessions.balanced')}` : variance > 0 ? `· ${t('posSessions.over')}` : `· ${t('posSessions.short')}`}
+                                    </span>
+                                </div>
+                            )}
+                        </div>
+                    )}
                     <div className="grid gap-2 grid-cols-1 sm:grid-cols-2 mb-3">
                         <div className="sm:col-span-2">
                             <label className="label justify-start label-text required">{t('posSessions.closeCash')}</label>
-                            <input name="close_cash" data-rules="required" type="number" className="input input-bordered input-sm w-full" />
+                            <input name="close_cash" data-rules="required" type="number" value={countedCash} onChange={(e) => setCountedCash(e.target.value)} className="input input-bordered input-sm w-full" />
                             <InputError messages={validErrors.close_cash} />
                         </div>
                     </div>

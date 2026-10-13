@@ -10,7 +10,7 @@ vi.mock("@/lib/axios", () => {
 	return { default: { get: cap("get"), post: cap("post"), put: cap("put"), delete: cap("delete"), patch: cap("patch") } }
 })
 
-import { getCompanyBranches, getPosSessions, getPosSession, addPosSession, endPosSession } from "./_posSession"
+import { getCompanyBranches, getPosSessions, getPosSession, addPosSession, endPosSession, getActivePosSession, getSessionReconciliation } from "./_posSession"
 
 const last = () => state.rec[state.rec.length - 1]
 beforeEach(() => { state.rec.length = 0 })
@@ -46,5 +46,17 @@ describe("_posSession wrappers", () => {
 		await endPosSession(9, {})
 		expect(last()).toMatchObject({ method: "post", url: "/api/pos-sessions/9?_method=PUT" })
 		expect(last().headers["X-Form-Request"]).toBe(true)
+	})
+
+	it("getActivePosSession hits the active route silently", async () => {
+		await getActivePosSession(7, 3)
+		expect(last()).toMatchObject({ method: "get", url: "/api/pos-sessions/active?branch_id=7&pos_register_id=3" })
+		expect(last().headers["X-SWR-Request"]).toBe(true)
+	})
+
+	it("getSessionReconciliation hits the reconciliation route silently", async () => {
+		await getSessionReconciliation(9)
+		expect(last()).toMatchObject({ method: "get", url: "/api/pos-sessions/9/reconciliation" })
+		expect(last().headers["X-SWR-Request"]).toBe(true)
 	})
 })

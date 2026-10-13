@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faDumbbell, faShieldHalved } from "@fortawesome/free-solid-svg-icons"
 import { getMyDashboardCards } from "./_dashboard"
 import { SMALL_CARD_REGISTRY, WIDE_CARD_REGISTRY } from "./_cards"
+import OpenPosSessionCard from "./_components/openPosSessionCard"
 
 export default function Dashboard() {
 	const { t } = useTranslation("common")
@@ -48,8 +49,9 @@ export default function Dashboard() {
 			containerClass="flex justify-between items-start"
 		/>
 
+		<div className="mt-6 grid gap-6 lg:grid-cols-2 items-start">
 		{mfaNeeded && (
-			<div className="card mt-6 border border-base-200 shadow-sm bg-base-100">
+			<div className="card border border-base-200 shadow-sm bg-base-100">
 				<div className="card-body">
 					<h2 className="card-title text-xl mb-4">
 						<div className="w-1 h-6 bg-primary rounded me-2"></div>
@@ -72,6 +74,8 @@ export default function Dashboard() {
 				</div>
 			</div>
 		)}
+			<OpenPosSessionCard />
+		</div>
 
 		{cards === null ? (
 			<div className="mt-6 flex justify-center py-16"><span className="loading loading-spinner loading-lg text-primary"></span></div>

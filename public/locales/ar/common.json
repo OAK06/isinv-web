@@ -1850,9 +1850,22 @@
       "endedBy": "انتهى بواسطة",
       "openCash": "النقدية الافتتاحية",
       "closeCash": "النقدية الختامية",
-      "status": "الحالة"
+      "status": "الحالة",
+      "expectedCash": "المتوقع",
+      "variance": "الفرق"
     },
-    "openCashHint": "كم المبلغ النقدي الموجود في درجك الآن؟ أدخل الرصيد الافتتاحي."
+    "openCashHint": "كم المبلغ النقدي الموجود في درجك الآن؟ أدخل الرصيد الافتتاحي.",
+    "openSessionTitle": "جلسة نقاط البيع المفتوحة",
+    "openedAt": "فُتحت",
+    "openingFloat": "الرصيد الافتتاحي",
+    "sales": "المبيعات",
+    "purchases": "المشتريات",
+    "expectedCash": "النقد المتوقع",
+    "variance": "الفرق",
+    "over": "زيادة",
+    "short": "عجز",
+    "balanced": "متطابق",
+    "closeBtn": "إغلاق الجلسة"
   },
   "onboarding": {
     "title": "ابدأ رحلتك مع IS Inventory",

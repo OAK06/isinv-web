@@ -23,6 +23,20 @@ export async function getPosSession(id: number): Promise<{ response: PosSession 
 		.catch(error => { throw error })
 }
 
+/** The register's currently-open session (+ live reconciliation), or null. Silent. */
+export async function getActivePosSession(branchID: number, posRegisterID: number) {
+	return await axios.get(`/api/pos-sessions/active?branch_id=${branchID}&pos_register_id=${posRegisterID}`, { headers: { 'X-SWR-Request': true } })
+		.then(res => res.data)
+		.catch(error => { throw error })
+}
+
+/** Live cash reconciliation for one session (close-modal preview). */
+export async function getSessionReconciliation(id: number) {
+	return await axios.get(`/api/pos-sessions/${id}/reconciliation`, { headers: { 'X-SWR-Request': true } })
+		.then(res => res.data)
+		.catch(error => { throw error })
+}
+
 export async function addPosSession(data: any) {
 	return await axios.post(`/api/pos-sessions`, data, {
 			headers: { 'X-Form-Request': true }

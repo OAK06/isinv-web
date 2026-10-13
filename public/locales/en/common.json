@@ -1850,9 +1850,22 @@
       "endedBy": "Ended By",
       "openCash": "Open Cash",
       "closeCash": "Close Cash",
-      "status": "Status"
+      "status": "Status",
+      "expectedCash": "Expected",
+      "variance": "Variance"
     },
-    "openCashHint": "How much cash do you have in your register right now? Enter the opening balance."
+    "openCashHint": "How much cash do you have in your register right now? Enter the opening balance.",
+    "openSessionTitle": "Open POS Session",
+    "openedAt": "opened",
+    "openingFloat": "Opening Float",
+    "sales": "Sales",
+    "purchases": "Purchases",
+    "expectedCash": "Expected Cash",
+    "variance": "Variance",
+    "over": "over",
+    "short": "short",
+    "balanced": "balanced",
+    "closeBtn": "Close Session"
   },
   "onboarding": {
     "title": "Get started with IS Inventory",

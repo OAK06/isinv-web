@@ -60,6 +60,8 @@ export default function PosSessionList() {
         { key: 'end', label: t('posSessions.table.end') },
         { key: 'open_cash', label: t('posSessions.table.openCash') },
         { key: 'close_cash', label: t('posSessions.table.closeCash') },
+        { key: 'expected_cash', label: t('posSessions.table.expectedCash') },
+        { key: 'variance', label: t('posSessions.table.variance') },
         { key: 'started_by', label: t('posSessions.table.startedBy') },
         { key: 'ended_by', label: t('posSessions.table.endedBy') },
         { key: 'status', label: t('posSessions.table.status') }

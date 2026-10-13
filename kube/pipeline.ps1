@@ -54,7 +54,6 @@ if ($LASTEXITCODE -ne 0) {
 # --- 5. DEPLOY & RESTART ---
 echo "--- Deploying to Kubernetes ---"
 kubectl apply -f .\kube\deployment.yaml -n $NAMESPACE
-kubectl apply -f .\kube\service.yaml -n $NAMESPACE
 
 # Force the deployment to use the specific new version
 kubectl set image deployment/$DEPLOYMENT_NAME $DEPLOYMENT_NAME=$IMAGE_NAME -n $NAMESPACE
