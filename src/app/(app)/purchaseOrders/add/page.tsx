@@ -183,9 +183,9 @@ export default function PurchaseOrderAdd() {
 						</div>
 						<div className="lg:col-span-2">
 							<label className="label justify-start">
-								<span className="label-text font-semibold required">{t('purchases.receiptPhoto')}</span>
+								<span className="label-text font-semibold">{t('purchases.receiptPhoto')}</span>
 							</label>
-							<input name="receipt_photo" data-rules="required" type="file" accept="image/*" className="file-input file-input-bordered input-sm w-full" />
+							<input name="receipt_photo" type="file" accept="image/*" className="file-input file-input-bordered input-sm w-full" />
 							<InputError messages={validErrors.receipt_photo} />
 						</div>
 						<div className="lg:col-span-2">
