@@ -66,13 +66,6 @@ export default function Sidebar({ user }) {
         // tenant sidebar so admin and tenant surfaces don't overlap.
         // Daily member operations first (Reception / Trainer live here).
         { type: 'link', href: '/members', icon: faPeopleGroup, label: t('sidebar.members'), show: can('view members') && hasNav('members') },
-        { type: 'link', href: '/applications', icon: faFileLines, label: t('sidebar.applications'), show: GYM_FEATURES && can('view applications') && hasNav('applications') },
-        { type: 'link', href: '/memberPlans', icon: faClipboardList, label: t('sidebar.memberPlans'), show: GYM_FEATURES && can('view memberPlans') && hasNav('memberPlans') },
-        { type: 'link', href: '/calendar', icon: faCalendar, label: t('sidebar.calendar'), show: GYM_FEATURES && can('view sessions') && hasNav('calendar') },
-        { type: 'link', href: '/scanner', icon: faQrcode, label: t('sidebar.scanner'), show: GYM_FEATURES && can('scanner') && hasNav('scanner') },
-        // Offerings: plans then classes (per Omar), then POS.
-        { type: 'link', href: '/plans', icon: faTags, label: t('sidebar.plans'), show: GYM_FEATURES && can('view plans') && hasNav('plans') },
-        { type: 'link', href: '/classes', icon: faDumbbell, label: t('sidebar.classes'), show: GYM_FEATURES && can('view classes') && hasNav('classes') },
         {
             type: 'group', key: 'pos', icon: faCashRegister, label: t('sidebar.pointOfSale'), show: hasNav('pos'),
             items: [
@@ -92,11 +85,7 @@ export default function Sidebar({ user }) {
         {
             type: 'group', key: 'reports', icon: faChartColumn, label: t('sidebar.reports'), show: hasNav('reports'),
             items: [
-                { href: '/duePaymentsReport', label: t('sidebar.duePaymentsReport'), show: GYM_FEATURES && hasReport('due_payments') && can('view upcoming billing report'), locked: reportsLocked },
-                { href: '/subscriptionTransactions', label: t('sidebar.subscriptionTransactionsReport'), show: GYM_FEATURES && hasReport('subscription_transactions') && can('view daily subscriptions report'), locked: reportsLocked },
                 { href: '/revenueSummary', label: t('sidebar.revenueSummaryReport'), show: hasReport('revenue_summary') && can('view revenue report'), locked: reportsLocked },
-                { href: '/expiringMemberships', label: t('sidebar.expiringMembershipsReport'), show: GYM_FEATURES && hasReport('expiring_memberships') && can('view expiring memberships report') },
-                { href: '/attendanceReport', label: t('sidebar.attendanceReport'), show: GYM_FEATURES && hasReport('attendance') && can('view attendance report') },
                 { href: '/lowStock', label: t('sidebar.lowStockReport'), show: hasReport('low_stock') && can('view low stock report'), locked: posLocked },
                 { href: '/refundsReport', label: t('sidebar.refundsReport'), show: hasReport('refunds_report') && can('view refunds report'), locked: posLocked },
             ],

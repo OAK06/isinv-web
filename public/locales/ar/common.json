@@ -309,7 +309,13 @@
     "confirmRefund": "هل تريد استرداد هذه المبيعة؟ سيؤدي ذلك إلى إعادة المنتجات إلى المخزون ولا يمكن التراجع عنه.",
     "status": "الحالة",
     "refundSuccess": "تم استرداد المبيعة وإعادة المنتجات إلى المخزون.",
-    "unitPrice": "سعر الوحدة"
+    "unitPrice": "سعر الوحدة",
+    "editTitle": "تعديل البيع",
+    "editFormBtn": "حفظ التغييرات",
+    "editSuccess": "تم تحديث البيع بنجاح",
+    "deleteSuccess": "تم حذف البيع وإعادة المخزون",
+    "confirmUndoRefund": "التراجع عن هذا الاسترداد؟ سيُخصم المخزون المُعاد.",
+    "undoRefundSuccess": "تم التراجع عن الاسترداد"
   },
   "refunds": {
     "listTitle": "المرتجعات",
@@ -488,7 +494,9 @@
     "receiptPhoto": "صورة الإيصال",
     "editTitle": "تعديل أمر الشراء",
     "editFormBtn": "حفظ التغييرات",
-    "updatedMessage": "تم تحديث أمر الشراء بنجاح"
+    "updatedMessage": "تم تحديث أمر الشراء بنجاح",
+    "purchaseDate": "تاريخ الشراء",
+    "unitCost": "تكلفة الوحدة"
   },
   "stocktakes": {
     "listTitle": "جرد المخزون",

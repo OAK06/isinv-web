@@ -57,20 +57,18 @@ export default function Dashboard() {
 						<div className="w-1 h-6 bg-primary rounded me-2"></div>
 						{t("onboarding.title")}
 					</h2>
-					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-						{/* Security nudge: prompt to enable 2FA → profile page (where the 2FA card lives). */}
-						<Link href="/profile">
-							<div className="card bg-base-100 border border-accent/50 p-4 flex-row items-center gap-2 transition-colors hover:border-accent">
-								<div className="min-w-10 min-h-10 rounded-full flex items-center justify-center bg-accent/10 text-accent shrink-0">
-									<FontAwesomeIcon icon={faShieldHalved} className="text-xl" />
-								</div>
-								<div>
-									<p className="text-lg font-semibold">{t("onboarding.enableMfa")}</p>
-									<p className="text-xs text-base-content/60">{t("onboarding.enableMfaHint")}</p>
-								</div>
+					{/* Security nudge: prompt to enable 2FA → profile page (where the 2FA card lives). */}
+					<Link href="/profile" className="block">
+						<div className="card bg-base-100 border border-accent/50 p-4 flex-row items-center gap-3 transition-colors hover:border-accent">
+							<div className="min-w-10 min-h-10 rounded-full flex items-center justify-center bg-accent/10 text-accent shrink-0">
+								<FontAwesomeIcon icon={faShieldHalved} className="text-xl" />
 							</div>
-						</Link>
-					</div>
+							<div className="min-w-0">
+								<p className="text-lg font-semibold">{t("onboarding.enableMfa")}</p>
+								<p className="text-xs text-base-content/60">{t("onboarding.enableMfaHint")}</p>
+							</div>
+						</div>
+					</Link>
 				</div>
 			</div>
 		)}

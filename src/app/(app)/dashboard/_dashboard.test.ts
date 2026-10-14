@@ -19,9 +19,6 @@ describe("_dashboard wrappers", () => {
 	const widgets: [keyof typeof DashboardService, string][] = [
 		["getPlanRevenues", "plan-revenues"],
 		["getInventoryAlerts", "inventory-alerts"],
-		["getMyClasses", "my-classes"],
-		["getCheckinsToday", "checkins-today"],
-		["getNewApplications", "new-applications"],
 		["getTodaysSales", "todays-sales"],
 		["getPoCostsMonth", "po-costs-month"],
 		["getPoCostsToday", "po-costs-today"],

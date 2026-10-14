@@ -6,12 +6,12 @@ import { useEffect, useState } from "react"
 import { useAuth } from "@/hooks/auth"
 import Header from "@/app/(app)/_components/header"
 import BaseTable from "@/app/(app)/_components/baseTable"
-import { getSales, addRefund } from "@/app/(app)/sales/_sale"
+import { getSales, addRefund, deleteSale, deleteRefund } from "@/app/(app)/sales/_sale"
 import { useConfirm } from "@/_components/useConfirm"
 import { useAtom } from "jotai"
 import { branch, posRegister, responseMessage, store } from "@/_state/globalStore"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPlus, faArrowRotateLeft } from "@fortawesome/free-solid-svg-icons"
+import { faPlus, faArrowRotateLeft, faRotateRight } from "@fortawesome/free-solid-svg-icons"
 import { useTranslation } from "next-i18next"
 
 export default function SalesList() {
@@ -38,9 +38,26 @@ export default function SalesList() {
 		}
 	}
 
+	const undoRefund = async (id: number) => {
+		if (await confirm(t('sales.confirmUndoRefund'))) {
+			await deleteRefund(id)
+			store.set(responseMessage, { type: 'success', text: t('sales.undoRefundSuccess') })
+			getList(page)
+		}
+	}
+
+	const removeSale = async (id: number) => {
+		await deleteSale(id)
+		store.set(responseMessage, { type: 'success', text: t('sales.deleteSuccess') })
+		getList(page)
+	}
+
 	const actions = {
 		path: "/sales",
 		view: user.permissions.includes('view sales'),
+		// Owner-only correction: edit a sale (not once it's been refunded).
+		edit: (row: any) => user.permissions.includes('edit sales') && String(row.state).toLowerCase() !== 'refunded',
+		delete: user.permissions.includes('delete sales'),
 		extra: [
 			{
 				type: 'btn',
@@ -48,6 +65,13 @@ export default function SalesList() {
 				classes: 'text-error',
 				display: (row: any) => user.permissions.includes('create refunds') && String(row.state).toLowerCase() !== 'refunded',
 				action: refund,
+			},
+			{
+				type: 'btn',
+				icon: <FontAwesomeIcon icon={faRotateRight} />,
+				classes: 'text-warning',
+				display: (row: any) => user.permissions.includes('delete refunds') && String(row.state).toLowerCase() === 'refunded',
+				action: undoRefund,
 			},
 		],
 	}
@@ -72,7 +96,7 @@ export default function SalesList() {
 			containerClass={"flex justify-between"}
 			actions={user.permissions.includes('create sales') && <Link href="/sales/add" className="btn btn-sm btn-primary"><FontAwesomeIcon icon={faPlus} /> {t('sales.addBtn')}</Link>}
 		/>
-		<BaseTable data={data} actions={actions} getListFunction={getList} tableController={'sale'} colHeaderNames={colNames} cardTitleCol={"name"} />
+		<BaseTable data={data} actions={actions} getListFunction={getList} deleteFunction={removeSale} tableController={'sale'} colHeaderNames={colNames} cardTitleCol={"name"} />
 		{confirmModal}
 	</>
 }

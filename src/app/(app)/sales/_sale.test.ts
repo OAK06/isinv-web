@@ -10,7 +10,7 @@ vi.mock("@/lib/axios", () => {
 	return { default: { get: cap("get"), post: cap("post"), put: cap("put"), delete: cap("delete"), patch: cap("patch") } }
 })
 
-import { getProducts, searchMembers, getSales, getSale, addSales, addRefund } from "./_sale"
+import { getProducts, searchMembers, getSales, getSale, addSales, addRefund, deleteSale, deleteRefund, editSale } from "./_sale"
 
 const last = () => state.rec[state.rec.length - 1]
 beforeEach(() => { state.rec.length = 0 })
@@ -52,5 +52,21 @@ describe("_sale wrappers", () => {
 		await addRefund(9, {})
 		expect(last()).toMatchObject({ method: "post", url: "/api/sales/9?_method=PUT" })
 		expect(last().headers["X-Form-Request"]).toBeUndefined()
+	})
+
+	it("deleteSale DELETEs the sale", async () => {
+		await deleteSale(9)
+		expect(last()).toMatchObject({ method: "delete", url: "/api/sales/9" })
+	})
+
+	it("deleteRefund DELETEs the sale's refund", async () => {
+		await deleteRefund(9)
+		expect(last()).toMatchObject({ method: "delete", url: "/api/sales/9/refund" })
+	})
+
+	it("editSale POSTs to the edit route with the form header", async () => {
+		await editSale(9, {})
+		expect(last()).toMatchObject({ method: "post", url: "/api/sales/9/edit" })
+		expect(last().headers["X-Form-Request"]).toBe(true)
 	})
 })

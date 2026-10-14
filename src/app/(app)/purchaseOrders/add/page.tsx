@@ -165,6 +165,13 @@ export default function PurchaseOrderAdd() {
 						</div>
 						<div>
 							<label className="label justify-start">
+								<span className="label-text font-semibold">{t('purchases.purchaseDate')}</span>
+							</label>
+							<input name="purchase_date" type="date" defaultValue={new Date().toISOString().split('T')[0]} className="input input-bordered input-sm w-full" />
+							<InputError messages={validErrors.purchase_date} />
+						</div>
+						<div>
+							<label className="label justify-start">
 								<span className="label-text font-semibold">{t('purchases.expiryDate')}</span>
 							</label>
 							<input name="expiry_date" type="date" className="input input-bordered input-sm w-full" />

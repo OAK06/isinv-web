@@ -48,3 +48,24 @@ export async function addRefund(id: number, data) {
 		.then(res => res.data)
 		.catch(error => { throw error })
 }
+
+/** Owner: delete a sale (restocks its units + removes the records). */
+export async function deleteSale(id: number) {
+	return await axios.delete(`/api/sales/${id}`)
+		.then(res => res.data)
+		.catch(error => { throw error })
+}
+
+/** Owner: undo a refund (re-consumes stock, sale back to Succeeded). */
+export async function deleteRefund(id: number) {
+	return await axios.delete(`/api/sales/${id}/refund`)
+		.then(res => res.data)
+		.catch(error => { throw error })
+}
+
+/** Owner: edit a sale — reverses old stock then re-applies the new cart. */
+export async function editSale(id: number, data: any) {
+	return await axios.post(`/api/sales/${id}/edit`, data, { headers: { 'X-Form-Request': true } })
+		.then(res => res.data)
+		.catch(error => { throw error })
+}

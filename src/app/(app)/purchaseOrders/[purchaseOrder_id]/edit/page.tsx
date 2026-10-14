@@ -12,7 +12,7 @@ import InputError from "@/_components/inputError"
 import { useTranslation } from "next-i18next"
 import Header from "@/app/(app)/_components/header"
 import { fileUrl } from "@/_utils/fileUrl"
-import { formatNumber } from "@/_helpers/currency"
+import { formatNumber, formatCurrency } from "@/_helpers/currency"
 import { useBreadcrumbLabel } from "@/hooks/useBreadcrumbLabel"
 
 export default function PurchaseOrderEdit({ params }: any) {
@@ -92,7 +92,20 @@ export default function PurchaseOrderEdit({ params }: any) {
 								</label>
 								<input type="text" disabled value={formatNumber(data.inventory?.quantity)} className="input input-bordered input-sm w-full" />
 							</div>
+							<div>
+								<label className="label justify-start">
+									<span className="label-text font-semibold">{t('purchases.unitCost')}</span>
+								</label>
+								<input type="text" disabled value={formatCurrency(data.inventory?.cost_price)} className="input input-bordered input-sm w-full" />
+							</div>
 							{/* Editable fields */}
+							<div>
+								<label className="label justify-start">
+									<span className="label-text font-semibold">{t('purchases.purchaseDate')}</span>
+								</label>
+								<input name="purchase_date" type="date" defaultValue={data.purchase_date ?? ''} className="input input-bordered input-sm w-full" />
+								<InputError messages={validErrors.purchase_date} />
+							</div>
 							<div>
 								<label className="label justify-start">
 									<span className="label-text font-semibold">{t('purchases.supplier')}</span>

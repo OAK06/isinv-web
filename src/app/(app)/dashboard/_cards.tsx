@@ -4,7 +4,7 @@ import { ReactNode, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
-	faMoneyBillTrendUp, faDoorOpen, faCashRegister, faFileInvoiceDollar, faCalendarDay,
+	faMoneyBillTrendUp, faCashRegister, faFileInvoiceDollar, faCalendarDay,
 } from "@fortawesome/free-solid-svg-icons"
 import { DashboardService } from "@/app/(app)/dashboard/_dashboard"
 import { formatCurrency } from "@/_helpers/currency"
@@ -58,7 +58,6 @@ function StatCard({ cardKey, icon, value }: { cardKey: string, icon: any, value:
 
 // ---- KPI / stat cards -----------------------------------------------------
 const RevenuesCard = ({ branchID }: CardProps) => <StatCard cardKey="kpi_revenues" icon={faMoneyBillTrendUp} value={useWidget(DashboardService.getPlanRevenues, branchID, r => r.value)} />
-const CheckinsTodayCard = ({ branchID }: CardProps) => <StatCard cardKey="checkins_today" icon={faDoorOpen} value={useWidget(DashboardService.getCheckinsToday, branchID, r => r.value)} />
 const TodaysSalesCard = ({ branchID }: CardProps) => <StatCard cardKey="todays_sales" icon={faCashRegister} value={useWidget(DashboardService.getTodaysSales, branchID, r => r.value)} />
 const PoCostsMonthCard = ({ branchID }: CardProps) => <StatCard cardKey="po_costs_month" icon={faFileInvoiceDollar} value={useWidget(DashboardService.getPoCostsMonth, branchID, r => r.value)} />
 const PoCostsTodayCard = ({ branchID }: CardProps) => <StatCard cardKey="po_costs_today" icon={faCalendarDay} value={useWidget(DashboardService.getPoCostsToday, branchID, r => r.value)} />
@@ -106,20 +105,20 @@ const CategoryCostSalesCard = ({ branchID }: CardProps) => {
 							<span className="flex items-center gap-1.5"><span className="inline-block h-2.5 w-2.5 rounded-sm bg-base-300"></span>{t("categories.totalCost")}</span>
 							<span className="flex items-center gap-1.5"><span className="inline-block h-2.5 w-2.5 rounded-sm bg-primary"></span>{t("categories.totalSell")}</span>
 						</div>
-						<div className="mt-3 space-y-3" dir="ltr">
+						<div className="mt-3 flex items-end gap-3 overflow-x-auto pb-2" dir="ltr">
 							{(() => {
 								const max = Math.max(...rows.flatMap((r: any) => [Number(r.total_cost) || 0, Number(r.total_sell) || 0]), 1)
 								return rows.map((row: any, i: number) => (
-									<div key={i}>
-										<div className="mb-1 truncate text-xs text-base-content/60">{row.name}</div>
-										<div className="flex flex-col gap-1">
-											<div className="tooltip flex" data-tip={`${t("categories.totalCost")}: ${formatCurrency(row.total_cost)}`}>
-												<div className="h-3 min-w-[2px] rounded-sm bg-base-300 transition-all duration-500" style={{ width: `${((Number(row.total_cost) || 0) / max) * 100}%` }}></div>
+									<div key={i} className="flex min-w-14 flex-1 flex-col items-center gap-1">
+										<div className="flex h-40 w-full items-end justify-center gap-1">
+											<div className="tooltip flex h-full items-end" data-tip={`${t("categories.totalCost")}: ${formatCurrency(row.total_cost)}`}>
+												<div className="w-3 min-h-[2px] rounded-t bg-base-300 transition-all duration-500" style={{ height: `${((Number(row.total_cost) || 0) / max) * 100}%` }}></div>
 											</div>
-											<div className="tooltip flex" data-tip={`${t("categories.totalSell")}: ${formatCurrency(row.total_sell)}`}>
-												<div className="h-3 min-w-[2px] rounded-sm bg-primary transition-all duration-500" style={{ width: `${((Number(row.total_sell) || 0) / max) * 100}%` }}></div>
+											<div className="tooltip flex h-full items-end" data-tip={`${t("categories.totalSell")}: ${formatCurrency(row.total_sell)}`}>
+												<div className="w-3 min-h-[2px] rounded-t bg-primary transition-all duration-500" style={{ height: `${((Number(row.total_sell) || 0) / max) * 100}%` }}></div>
 											</div>
 										</div>
+										<span className="w-full truncate text-center text-xs text-base-content/60" title={row.name}>{row.name}</span>
 									</div>
 								))
 							})()}
@@ -131,53 +130,10 @@ const CategoryCostSalesCard = ({ branchID }: CardProps) => {
 	)
 }
 
-const MyClassesCard = ({ branchID }: CardProps) => {
-	const { t } = useTranslation("common")
-	const classes = useWidget<any[]>(DashboardService.getMyClasses, branchID, r => r.data)
-	return (
-		<Shell cardKey="my_classes_today">
-			{classes ? (
-				classes.length ? (
-					<div className="space-y-3">
-						{classes.map((c: any, i: number) => (
-							<div key={i} className="flex justify-between text-sm border-b border-base-200 pb-2">
-								<span className="font-medium">{c.name}</span>
-								<span className="text-base-content/50" dir="ltr">{new Date(c.start).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>
-							</div>
-						))}
-					</div>
-				) : <p className="text-sm text-base-content/50">{t("dashboardCards.noClasses")}</p>
-			) : <span className="loading loading-spinner loading-xs text-primary"></span>}
-		</Shell>
-	)
-}
-
-const NewApplicationsCard = ({ branchID }: CardProps) => {
-	const { t } = useTranslation("common")
-	const apps = useWidget<any[]>(DashboardService.getNewApplications, branchID, r => r.data)
-	return (
-		<Shell cardKey="new_applications">
-			{apps ? (
-				apps.length ? (
-					<div className="space-y-3">
-						{apps.map((a: any, i: number) => (
-							<div key={i} className="flex justify-between text-sm border-b border-base-200 pb-2">
-								<span>{a.fname} {a.sname}</span>
-								<span className="text-base-content/50">{new Date(a.created_at).toLocaleDateString()}</span>
-							</div>
-						))}
-					</div>
-				) : <p className="text-sm text-base-content/50">{t("dashboardCards.noApplications")}</p>
-			) : <span className="loading loading-spinner loading-xs text-primary"></span>}
-		</Shell>
-	)
-}
-
 export const SMALL_CARD_REGISTRY: Record<string, { Component: (p: CardProps) => JSX.Element }> = {
 	kpi_revenues: { Component: RevenuesCard },
 	po_costs_month: { Component: PoCostsMonthCard },
 	po_costs_today: { Component: PoCostsTodayCard },
-	checkins_today: { Component: CheckinsTodayCard },
 	todays_sales: { Component: TodaysSalesCard },
 }
 
@@ -185,6 +141,4 @@ export const SMALL_CARD_REGISTRY: Record<string, { Component: (p: CardProps) => 
 export const WIDE_CARD_REGISTRY: Record<string, { Component: (p: CardProps) => JSX.Element }> = {
 	category_cost_sales: { Component: CategoryCostSalesCard },
 	inventory_alerts: { Component: InventoryAlertsCard },
-	my_classes_today: { Component: MyClassesCard },
-	new_applications: { Component: NewApplicationsCard },
 }

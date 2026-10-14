@@ -309,7 +309,13 @@
     "confirmRefund": "Refund this sale? This returns the items to stock and cannot be undone.",
     "status": "Status",
     "refundSuccess": "Sale refunded and items returned to stock.",
-    "unitPrice": "Unit Price"
+    "unitPrice": "Unit Price",
+    "editTitle": "Edit Sale",
+    "editFormBtn": "Save Changes",
+    "editSuccess": "Sale updated successfully",
+    "deleteSuccess": "Sale deleted and stock restored",
+    "confirmUndoRefund": "Undo this refund? The returned stock will be taken back out.",
+    "undoRefundSuccess": "Refund undone"
   },
   "refunds": {
     "listTitle": "Refunds",
@@ -488,7 +494,9 @@
     "receiptPhoto": "Receipt photo",
     "editTitle": "Edit Purchase Order",
     "editFormBtn": "Save Changes",
-    "updatedMessage": "Purchase order updated successfully"
+    "updatedMessage": "Purchase order updated successfully",
+    "purchaseDate": "Purchase Date",
+    "unitCost": "Unit Cost"
   },
   "stocktakes": {
     "listTitle": "Stocktakes",

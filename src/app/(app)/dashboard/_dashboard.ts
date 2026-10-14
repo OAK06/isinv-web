@@ -6,9 +6,6 @@ const getWidget = (path: string, branchID: number) => axios.get(`/api/dashboard/
 export const DashboardService = {
     getPlanRevenues: (id: number) => getWidget('plan-revenues', id),
     getInventoryAlerts: (id: number) => getWidget('inventory-alerts', id),
-    getMyClasses: (id: number) => getWidget('my-classes', id),
-    getCheckinsToday: (id: number) => getWidget('checkins-today', id),
-    getNewApplications: (id: number) => getWidget('new-applications', id),
     getTodaysSales: (id: number) => getWidget('todays-sales', id),
     getPoCostsMonth: (id: number) => getWidget('po-costs-month', id),
     getPoCostsToday: (id: number) => getWidget('po-costs-today', id),

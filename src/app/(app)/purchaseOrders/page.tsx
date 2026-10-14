@@ -36,6 +36,7 @@ export default function PurchaseOrderList() {
 		{ key: 'supplier_id', label: t('purchases.table.supplier') },
 		{ key: 'product', label: t('purchases.product') },
 		{ key: 'quantity', label: t('purchases.quantity') },
+		{ key: 'purchase_date', label: t('purchases.purchaseDate') },
         { key: 'created_by', label: t('purchases.table.createdBy') },
 		{ key: 'archived', label: t('archived') }
 	]
